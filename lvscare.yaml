@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    component: kube-lvscare
+    tier: control-plane
+  name: kube-lvscare
+  namespace: kube-system
+spec:
+  containers:
+    - args:
+        - care
+        - --vs
+        - 10.103.97.12:6443
+        - --health-path
+        - /healthz
+        - --health-schem
+        - https
+        - --rs
+        - 11.11.11.111:6443
+      command:
+        - /usr/bin/lvscare
+      image: fanux/lvscare:v1.1.0
+      imagePullPolicy: IfNotPresent
+      name: kube-lvscare
+      securityContext:
+        privileged: true
+      volumeMounts:
+        - mountPath: /lib/modules
+          name: lib-modules
+          readOnly: true
+  hostNetwork: true
+  priorityClassName: system-cluster-critical
+  volumes:
+    - hostPath:
+        path: /lib/modules
+        type: ""
+      name: lib-modules
