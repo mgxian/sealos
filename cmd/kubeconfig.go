@@ -51,7 +51,7 @@ func CreateKubeConfig() {
 		BaseName: "ca",
 	}
 
-	controlPlaneEndpoint := fmt.Sprintf("https://%s:6443", ApiServer)
+	controlPlaneEndpoint := fmt.Sprintf("https://%s", ApiServer)
 
 	hostname := "whatever"
 	err := cert.CreateJoinControlPlaneKubeConfigFiles(KubeConfigDir,
